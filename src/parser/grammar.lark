@@ -1,0 +1,38 @@
+// 🎯 Gramática base para pseudocódigo
+
+start: stmt+
+
+// ---- Sentencias ----
+?stmt: assign
+     | if_stmt
+     | while_loop
+     | for_loop
+     | block
+
+assign: NAME "←" expr
+
+if_stmt: "if" "(" expr ")" "then" block ("else" block)?
+
+while_loop: "while" "(" expr ")" "do" block
+
+for_loop: "for" NAME "←" expr "to" expr "do" block
+
+block: "begin" stmt* "end"
+
+// ---- Expresiones ----
+?expr: expr ("+"|"-") expr   -> addsub
+     | expr ("*"|"/") expr   -> muldiv
+     | expr ("<"|">"|"="|"<="|">="|"≠") expr -> cmp
+     | "(" expr ")"
+     | NAME
+     | NUMBER
+
+// ---- Tokens ----
+NAME: /[a-zA-Z_][a-zA-Z0-9_]*/
+NUMBER: /\d+/
+
+COMMENT: "►" /[^\n]+/
+
+// ---- Ignorar ----
+%ignore COMMENT
+%ignore /[ \t\r\n]+/
